@@ -1,0 +1,52 @@
+---
+// Navegación principal
+---
+
+<nav>
+  <div class="nav-inner">
+    <a href="#" class="nav-logo">AL · DEV</a>
+    <ul class="flex gap-8 list-none">
+      <li><a href="#experiencia" class="nav-link">experiencia</a></li>
+      <li><a href="#stack"       class="nav-link">stack</a></li>
+      <li><a href="#contacto"    class="nav-link">contacto</a></li>
+    </ul>
+  </div>
+</nav>
+
+<style>
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(10, 10, 10, 0.85);
+    backdrop-filter: blur(12px);
+  }
+
+  .nav-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.1rem 2.5rem;
+    max-width: 960px;
+    margin: 0 auto;
+  }
+
+  .nav-logo {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    color: #888780;
+    text-decoration: none;
+  }
+
+  .nav-link {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: #888780;
+    text-decoration: none;
+    letter-spacing: 0.06em;
+    transition: color 0.2s;
+  }
+  .nav-link:hover { color: #f0ede8; }
+</style>

@@ -1,0 +1,26 @@
+---
+import { site } from '../data/site';
+---
+
+<footer>
+  <p>© {site.year} {site.name.toUpperCase()}</p>
+  <p>{site.role.toUpperCase()} · {site.location.toUpperCase()}</p>
+</footer>
+
+<style>
+  footer {
+    padding: 2rem 2.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 960px;
+    margin: 0 auto;
+  }
+
+  footer p {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: #444441;
+    letter-spacing: 0.06em;
+  }
+</style>

@@ -1,0 +1,51 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg:            #0a0a0a;
+  --bg2:           #111111;
+  --bg3:           #1a1a1a;
+  --border:        rgba(255, 255, 255, 0.08);
+  --border-md:     rgba(255, 255, 255, 0.14);
+  --text:          #f0ede8;
+  --muted:         #888780;
+  --hint:          #444441;
+  --accent:        #378ADD;
+  --accent-dim:    rgba(55, 138, 221, 0.12);
+  --accent-border: rgba(55, 138, 221, 0.35);
+  --amber:         #EF9F27;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Instrument Sans', sans-serif;
+  font-size: 15px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Cursor personalizado */
+* { cursor: none !important; }
+
+/* Animaciones de entrada */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.fade-up  { animation: fadeUp .7s ease both; }
+.delay-1  { animation-delay: .1s; }
+.delay-2  { animation-delay: .2s; }
+.delay-3  { animation-delay: .35s; }
+.delay-4  { animation-delay: .5s; }

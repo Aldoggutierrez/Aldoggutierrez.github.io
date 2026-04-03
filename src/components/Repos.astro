@@ -1,0 +1,115 @@
+---
+import RepoCard from './RepoCard.astro';
+import type { Repo } from './RepoCard.astro';
+import { site } from '../data/site';
+
+// Fetch en tiempo de build — no afecta al visitante
+const username = site.githubUsername;
+const token    = import.meta.env.GITHUB_TOKEN;
+
+const headers: Record<string, string> = {
+  Accept: 'application/vnd.github.v3+json',
+};
+if (token) headers['Authorization'] = `Bearer ${token}`;
+
+let repos: Repo[] = [];
+let fetchError = false;
+
+try {
+  const res = await fetch(
+    `https://api.github.com/users/${username}/repos?per_page=100&type=public`,
+    { headers }
+  );
+
+  if (!res.ok) throw new Error(`GitHub API ${res.status}`);
+
+  const data: Repo[] = await res.json();
+
+  repos = data
+    .filter(r => !(r as any).fork)                          // sin forks
+    .sort((a, b) => {
+      if (b.stargazers_count !== a.stargazers_count)
+        return b.stargazers_count - a.stargazers_count;     // primero por estrellas
+      return new Date(b.updated_at).getTime()               // luego por fecha
+           - new Date(a.updated_at).getTime();
+    })
+    .slice(0, 6);                                           // máximo 6 repos
+} catch (e) {
+  console.warn('[Repos] No se pudo obtener repos de GitHub:', e);
+  fetchError = true;
+}
+---
+
+{!fetchError && repos.length > 0 && (
+  <section id="repos">
+    <div class="container">
+      <p class="eyebrow"><span class="n">04</span> — REPOSITORIOS · OPEN SOURCE</p>
+      <div class="repos-grid">
+        {repos.map(repo => (
+          <RepoCard repo={repo} />
+        ))}
+      </div>
+      <p class="repos-footer">
+        <a href={site.github} target="_blank" rel="noopener">
+          Ver todos los repositorios →
+        </a>
+      </p>
+    </div>
+  </section>
+)}
+
+<style>
+  section {
+    padding: 5rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0 2.5rem;
+  }
+
+  .eyebrow {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: #444441;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    margin-bottom: 2.5rem;
+  }
+  .eyebrow .n { color: #378ADD; }
+
+  .repos-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+
+  .repos-footer {
+    margin-top: 1.5rem;
+    text-align: right;
+  }
+  .repos-footer a {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: #888780;
+    text-decoration: none;
+    letter-spacing: 0.04em;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    padding-bottom: 2px;
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .repos-footer a:hover {
+    color: #f0ede8;
+    border-color: rgba(255, 255, 255, 0.3);
+  }
+
+  @media (max-width: 700px) {
+    .repos-grid { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 500px) {
+    .repos-grid { grid-template-columns: 1fr; }
+  }
+</style>

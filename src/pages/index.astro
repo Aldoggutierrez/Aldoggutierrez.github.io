@@ -1,0 +1,44 @@
+---
+import Base from '../layouts/Base.astro';
+import Nav from '../components/Nav.astro';
+import Hero from '../components/Hero.astro';
+import Projects from '../components/Projects.astro';
+import Capabilities from '../components/Capabilities.astro';
+import Stack from '../components/Stack.astro';
+import Repos from '../components/Repos.astro';
+import Contact from '../components/Contact.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<Base>
+  <Nav />
+  <Hero />
+  <Projects />
+  <Capabilities />
+  <Stack />
+  <Repos />
+  <Contact />
+  <Footer />
+</Base>
+
+<script>
+  // Scroll reveal — aparece al entrar en viewport
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((e) => {
+        if (e.isIntersecting) {
+          (e.target as HTMLElement).style.opacity = '1';
+          (e.target as HTMLElement).style.transform = 'translateY(0)';
+        }
+      });
+    },
+    { threshold: 0.1 }
+  );
+
+  document.querySelectorAll<HTMLElement>('.proj-card, .cap-card, .sk-col').forEach((el) => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(20px)';
+    el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+    observer.observe(el);
+  });
+</script>

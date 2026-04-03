@@ -1,0 +1,178 @@
+---
+export interface Repo {
+  name:              string;
+  description:       string | null;
+  html_url:          string;
+  language:          string | null;
+  stargazers_count:  number;
+  forks_count:       number;
+  topics:            string[];
+  updated_at:        string;
+}
+
+interface Props {
+  repo: Repo;
+}
+const { repo } = Astro.props;
+
+// Colores de lenguajes más comunes (paleta de GitHub Linguist)
+const langColors: Record<string, string> = {
+  TypeScript:  '#3178c6',
+  JavaScript:  '#f1e05a',
+  PHP:         '#4F5D95',
+  Vue:         '#41b883',
+  Python:      '#3572A5',
+  Go:          '#00ADD8',
+  Rust:        '#dea584',
+  CSS:         '#563d7c',
+  HTML:        '#e34c26',
+  Shell:       '#89e051',
+  Astro:       '#ff5a03',
+  Dockerfile:  '#384d54',
+};
+
+const langColor = repo.language ? (langColors[repo.language] ?? '#888780') : null;
+
+// Formatear fecha relativa simple
+const updatedDate = new Date(repo.updated_at);
+const diffDays = Math.floor((Date.now() - updatedDate.getTime()) / 86_400_000);
+const updatedLabel =
+  diffDays === 0 ? 'hoy'
+  : diffDays === 1 ? 'ayer'
+  : diffDays < 30 ? `hace ${diffDays}d`
+  : diffDays < 365 ? `hace ${Math.floor(diffDays / 30)}m`
+  : `hace ${Math.floor(diffDays / 365)}a`;
+---
+
+<a class="repo-card" href={repo.html_url} target="_blank" rel="noopener">
+  <div class="rc-top">
+    <span class="rc-name">{repo.name}</span>
+    {repo.stargazers_count > 0 && (
+      <span class="rc-stars">
+        <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor">
+          <path d="M8 .25a.75.75 0 0 1 .673.418l1.882 3.815 4.21.612a.75.75 0 0 1 .416 1.279l-3.046 2.97.719 4.192a.751.751 0 0 1-1.088.791L8 12.347l-3.766 1.98a.75.75 0 0 1-1.088-.79l.72-4.194L.818 6.374a.75.75 0 0 1 .416-1.28l4.21-.611L7.327.668A.75.75 0 0 1 8 .25Z"/>
+        </svg>
+        {repo.stargazers_count}
+      </span>
+    )}
+  </div>
+
+  <p class="rc-desc">{repo.description ?? 'Sin descripción'}</p>
+
+  {repo.topics.length > 0 && (
+    <div class="rc-topics">
+      {repo.topics.slice(0, 4).map(t => (
+        <span class="rc-topic">{t}</span>
+      ))}
+    </div>
+  )}
+
+  <div class="rc-footer">
+    {langColor && (
+      <span class="rc-lang">
+        <span class="rc-lang-dot" style={`background:${langColor}`}></span>
+        {repo.language}
+      </span>
+    )}
+    <span class="rc-updated">{updatedLabel}</span>
+  </div>
+</a>
+
+<style>
+  .repo-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 8px;
+    padding: 1.25rem;
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .repo-card:hover {
+    border-color: rgba(55, 138, 221, 0.35);
+    background: #111111;
+  }
+
+  .rc-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .rc-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: #f0ede8;
+    word-break: break-word;
+  }
+
+  .rc-stars {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: #EF9F27;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .rc-desc {
+    font-size: 12px;
+    color: #888780;
+    line-height: 1.6;
+    flex: 1;
+  }
+
+  .rc-topics {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-top: 2px;
+  }
+
+  .rc-topic {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    padding: 2px 7px;
+    border: 1px solid rgba(55, 138, 221, 0.3);
+    border-radius: 2px;
+    color: #378ADD;
+    letter-spacing: 0.03em;
+  }
+
+  .rc-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: auto;
+    padding-top: 0.75rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  .rc-lang {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: #888780;
+  }
+
+  .rc-lang-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .rc-updated {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: #444441;
+  }
+</style>

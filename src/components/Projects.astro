@@ -1,0 +1,58 @@
+---
+import ProjectCard from './ProjectCard.astro';
+import { projects } from '../data/projects';
+---
+
+<section id="experiencia">
+  <div class="container">
+    <p class="eyebrow"><span class="n">01</span> — EXPERIENCIA · CASOS DE ESTUDIO</p>
+    <p class="intro-note">// Sistemas desarrollados en entornos privados. Nombres de cliente omitidos por confidencialidad.</p>
+
+    <div class="proj-list">
+      {projects.map(project => (
+        <ProjectCard project={project} />
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  section {
+    padding: 5rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0 2.5rem;
+  }
+
+  .eyebrow {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: #444441;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    margin-bottom: 2.5rem;
+  }
+  .eyebrow .n { color: #378ADD; }
+
+  .intro-note {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: #888780;
+    border-left: 2px solid #378ADD;
+    padding: 0.65rem 1rem;
+    margin-bottom: 2rem;
+    background: rgba(55, 138, 221, 0.12);
+    border-radius: 0 2px 2px 0;
+  }
+
+  .proj-list {
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+</style>

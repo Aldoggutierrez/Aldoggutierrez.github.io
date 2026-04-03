@@ -1,0 +1,49 @@
+---
+import CapabilityCard from './CapabilityCard.astro';
+import { capabilities } from '../data/capabilities';
+---
+
+<section id="capacidades">
+  <div class="container">
+    <p class="eyebrow"><span class="n">02</span> — CAPACIDADES · LO QUE PUEDO CONSTRUIR</p>
+    <div class="caps-grid">
+      {capabilities.map(cap => (
+        <CapabilityCard capability={cap} />
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  section {
+    padding: 5rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0 2.5rem;
+  }
+
+  .eyebrow {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: #444441;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    margin-bottom: 2.5rem;
+  }
+  .eyebrow .n { color: #378ADD; }
+
+  .caps-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+
+  @media (max-width: 700px) {
+    .caps-grid { grid-template-columns: 1fr 1fr; }
+  }
+</style>

@@ -1,0 +1,87 @@
+---
+import { stack } from '../data/stack';
+---
+
+<section id="stack">
+  <div class="container">
+    <p class="eyebrow"><span class="n">03</span> — STACK TÉCNICO</p>
+    <div class="stack-grid">
+      {stack.map(col => (
+        <div class="sk-col">
+          <p class="sk-col-h">{col.heading}</p>
+          <ul class="sk-list">
+            {col.items.map(item => (
+              <li class={item.highlight ? 'hi' : ''}>{item.label}</li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  section {
+    padding: 5rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0 2.5rem;
+  }
+
+  .eyebrow {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: #444441;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    margin-bottom: 2.5rem;
+  }
+  .eyebrow .n { color: #378ADD; }
+
+  .stack-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .sk-col {
+    padding: 1.5rem 1.25rem;
+    border-right: 1px solid rgba(255, 255, 255, 0.08);
+  }
+  .sk-col:last-child { border-right: none; }
+
+  .sk-col-h {
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    padding-bottom: 0.6rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .sk-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .sk-list li {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: #888780;
+    letter-spacing: 0.02em;
+  }
+  .sk-list li.hi { color: #378ADD; }
+
+  @media (max-width: 700px) {
+    .stack-grid { grid-template-columns: 1fr 1fr; }
+  }
+</style>

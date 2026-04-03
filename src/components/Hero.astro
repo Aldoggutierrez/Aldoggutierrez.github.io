@@ -1,0 +1,162 @@
+---
+import { site } from '../data/site';
+---
+
+<section class="hero">
+  <div class="container">
+    <p class="hero-kicker fade-up">// FULLSTACK ENGINEER · DEVOPS · MONTERREY MX</p>
+
+    <h1 class="hero-h1 fade-up delay-1">
+      Aldo<br>
+      <span class="dim">López</span><span class="dot">.</span>
+    </h1>
+
+    <div class="hero-bottom fade-up delay-2">
+      <!-- Bio + CTAs -->
+      <div>
+        <p class="hero-bio" set:html={site.bio} />
+        <div class="flex gap-4 items-center mt-6">
+          <a href="#experiencia" class="btn-primary">Ver experiencia →</a>
+          <a href={`mailto:${site.email}`} class="btn-ghost">Contactar</a>
+        </div>
+      </div>
+
+      <!-- Pills de tecnologías -->
+      <div class="hero-pills">
+        <div class="pill-row">
+          <span class="pill pill-hi">Laravel</span>
+          <span class="pill pill-hi">Vue 3</span>
+        </div>
+        <div class="pill-row">
+          <span class="pill pill-hi">Docker</span>
+          <span class="pill">PostgreSQL</span>
+          <span class="pill">Redis</span>
+        </div>
+        <div class="pill-row">
+          <span class="pill">Amadeus API</span>
+          <span class="pill">Sabre API</span>
+        </div>
+        <div class="pill-row">
+          <span class="pill">Traefik</span>
+          <span class="pill">CI/CD</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    padding: 7rem 0 5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0 2.5rem;
+  }
+
+  .hero-kicker {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    color: #378ADD;
+    margin-bottom: 1.4rem;
+  }
+
+  .hero-h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(56px, 10vw, 96px);
+    font-weight: 800;
+    line-height: 0.92;
+    letter-spacing: -0.035em;
+    margin-bottom: 2rem;
+  }
+  .hero-h1 .dim { color: #444441; }
+  .hero-h1 .dot { color: #378ADD; }
+
+  .hero-bottom {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: end;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    margin-top: 2rem;
+  }
+
+  .hero-bio {
+    font-size: 14px;
+    color: #888780;
+    line-height: 1.8;
+  }
+  .hero-bio :global(strong) {
+    color: #f0ede8;
+    font-weight: 500;
+  }
+
+  .btn-primary {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    padding: 10px 22px;
+    background: #378ADD;
+    color: #fff;
+    border: none;
+    border-radius: 2px;
+    text-decoration: none;
+    transition: opacity 0.2s;
+  }
+  .btn-primary:hover { opacity: 0.8; }
+
+  .btn-ghost {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    padding: 10px 22px;
+    background: transparent;
+    color: #888780;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 2px;
+    text-decoration: none;
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .btn-ghost:hover {
+    color: #f0ede8;
+    border-color: rgba(255, 255, 255, 0.3);
+  }
+
+  .hero-pills {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: flex-end;
+  }
+  .pill-row {
+    display: flex;
+    gap: 6px;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+  }
+  .pill {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    padding: 4px 11px;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 2px;
+    color: #888780;
+    letter-spacing: 0.04em;
+  }
+  .pill-hi {
+    background: rgba(55, 138, 221, 0.12);
+    border-color: rgba(55, 138, 221, 0.35);
+    color: #378ADD;
+  }
+
+  @media (max-width: 700px) {
+    .hero-bottom    { grid-template-columns: 1fr; }
+    .hero-pills     { align-items: flex-start; }
+    .pill-row       { justify-content: flex-start; }
+  }
+</style>

@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aldo López — Fullstack Engineer & DevOps</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Space+Mono:wght@400;700&family=Instrument+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0a0a0a;
+    --bg2: #111111;
+    --bg3: #1a1a1a;
+    --border: rgba(255,255,255,0.08);
+    --border-md: rgba(255,255,255,0.14);
+    --text: #f0ede8;
+    --muted: #888780;
+    --hint: #444441;
+    --accent: #378ADD;
+    --accent-dim: rgba(55,138,221,0.12);
+    --accent-border: rgba(55,138,221,0.35);
+    --amber: #EF9F27;
+    --serif: 'Syne', sans-serif;
+    --mono: 'Space Mono', monospace;
+    --sans: 'Instrument Sans', sans-serif;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── CURSOR ── */
+  * { cursor: none !important; }
+  #cursor {
+    width: 8px; height: 8px;
+    background: var(--accent);
+    border-radius: 50%;
+    position: fixed;
+    top: 0; left: 0;
+    pointer-events: none;
+    z-index: 9999;
+    transition: transform 0.15s ease, opacity 0.2s;
+  }
+  #cursor.big { transform: scale(6); opacity: 0.15; }
+
+  /* ── LAYOUT ── */
+  .container { max-width: 960px; margin: 0 auto; padding: 0 2.5rem; }
+
+  /* ── NAV ── */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    border-bottom: 1px solid var(--border);
+    background: rgba(10,10,10,0.85);
+    backdrop-filter: blur(12px);
+  }
+  .nav-inner {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1.1rem 2.5rem;
+    max-width: 960px; margin: 0 auto;
+  }
+  .nav-logo {
+    font-family: var(--mono); font-size: 11px;
+    letter-spacing: .18em; color: var(--muted);
+    text-decoration: none;
+  }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a {
+    font-family: var(--mono); font-size: 11px;
+    color: var(--muted); text-decoration: none;
+    letter-spacing: .06em;
+    transition: color .2s;
+  }
+  .nav-links a:hover { color: var(--text); }
+
+  /* ── HERO ── */
+  .hero {
+    padding: 7rem 0 5rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .hero-kicker {
+    font-family: var(--mono); font-size: 11px;
+    letter-spacing: .18em; color: var(--accent);
+    margin-bottom: 1.4rem;
+  }
+  .hero-h1 {
+    font-family: var(--serif);
+    font-size: clamp(56px, 10vw, 96px);
+    font-weight: 800;
+    line-height: .92;
+    letter-spacing: -.035em;
+    margin-bottom: 2rem;
+  }
+  .hero-h1 .dim { color: var(--hint); }
+  .hero-h1 .dot { color: var(--accent); }
+
+  .hero-bottom {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: end;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border);
+    margin-top: 2rem;
+  }
+  .hero-bio {
+    font-size: 14px; color: var(--muted);
+    line-height: 1.8; margin-bottom: 1.5rem;
+  }
+  .hero-bio strong { color: var(--text); font-weight: 500; }
+  .cta-row { display: flex; gap: 1rem; align-items: center; }
+  .btn-primary {
+    font-family: var(--mono); font-size: 11px;
+    letter-spacing: .08em;
+    padding: 10px 22px;
+    background: var(--accent);
+    color: #fff;
+    border: none; border-radius: 2px;
+    text-decoration: none;
+    transition: opacity .2s;
+  }
+  .btn-primary:hover { opacity: .8; }
+  .btn-ghost {
+    font-family: var(--mono); font-size: 11px;
+    letter-spacing: .08em;
+    padding: 10px 22px;
+    background: transparent;
+    color: var(--muted);
+    border: 1px solid var(--border-md); border-radius: 2px;
+    text-decoration: none;
+    transition: color .2s, border-color .2s;
+  }
+  .btn-ghost:hover { color: var(--text); border-color: rgba(255,255,255,0.3); }
+
+  .hero-pills { display: flex; flex-direction: column; gap: 8px; align-items: flex-end; }
+  .pill-row-r { display: flex; gap: 6px; justify-content: flex-end; flex-wrap: wrap; }
+  .pill {
+    font-family: var(--mono); font-size: 10px;
+    padding: 4px 11px;
+    border: 1px solid var(--border-md);
+    border-radius: 2px;
+    color: var(--muted);
+    letter-spacing: .04em;
+  }
+  .pill-hi {
+    background: var(--accent-dim);
+    border-color: var(--accent-border);
+    color: var(--accent);
+  }
+
+  /* ── SECTIONS ── */
+  section { padding: 5rem 0; border-bottom: 1px solid var(--border); }
+  .eyebrow {
+    font-family: var(--mono); font-size: 10px;
+    letter-spacing: .2em; color: var(--hint);
+    padding-bottom: .75rem;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 2.5rem;
+  }
+  .eyebrow .n { color: var(--accent); }
+
+  /* ── INTRO NOTE ── */
+  .intro-note {
+    font-family: var(--mono); font-size: 11px;
+    color: var(--muted);
+    border-left: 2px solid var(--accent);
+    padding: .65rem 1rem;
+    margin-bottom: 2rem;
+    background: var(--accent-dim);
+    border-radius: 0 2px 2px 0;
+  }
+
+  /* ── PROJECT CARDS ── */
+  .proj-list { display: flex; flex-direction: column; border: 1px solid var(--border-md); border-radius: 10px; overflow: hidden; }
+
+  .proj-card {
+    padding: 2rem 2.25rem;
+    border-bottom: 1px solid var(--border);
+    transition: background .25s;
+  }
+  .proj-card:last-child { border-bottom: none; }
+  .proj-card:hover { background: var(--bg2); }
+
+  .pc-top {
+    display: grid;
+    grid-template-columns: 52px 1fr auto;
+    gap: 1.25rem;
+    align-items: start;
+    margin-bottom: 1.5rem;
+  }
+  .pc-num {
+    font-family: var(--serif);
+    font-size: 44px; font-weight: 800;
+    color: var(--hint);
+    line-height: 1;
+  }
+  .pc-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: .5rem; }
+  .tag {
+    font-family: var(--mono); font-size: 9px;
+    padding: 2px 8px;
+    border: 1px solid var(--border-md);
+    border-radius: 2px;
+    color: var(--muted);
+    letter-spacing: .04em;
+  }
+  .tag-blue { border-color: var(--accent-border); color: var(--accent); }
+  .tag-amber { border-color: rgba(239,159,39,0.4); color: var(--amber); }
+  .pc-name {
+    font-family: var(--serif);
+    font-size: 20px; font-weight: 700;
+    letter-spacing: -.02em; line-height: 1.2;
+    margin-bottom: .4rem;
+  }
+  .pc-pitch { font-size: 13px; color: var(--muted); line-height: 1.65; max-width: 500px; }
+  .pc-stack {
+    font-family: var(--mono); font-size: 10px;
+    color: var(--hint); text-align: right;
+    line-height: 2; white-space: nowrap;
+  }
+
+  .pc-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1.75rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+  }
+  .col-label {
+    font-family: var(--mono); font-size: 9px;
+    letter-spacing: .14em; color: var(--hint);
+    margin-bottom: .65rem;
+  }
+  .col-body { font-size: 12px; color: var(--muted); line-height: 1.7; }
+  .col-body li { list-style: none; padding-left: 12px; position: relative; margin-bottom: 2px; }
+  .col-body li::before { content: "›"; position: absolute; left: 0; color: var(--accent); }
+
+  .impact-strip {
+    display: flex; gap: 2rem; align-items: center;
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+    flex-wrap: wrap;
+  }
+  .impact-item { display: flex; flex-direction: column; gap: 3px; }
+  .impact-num {
+    font-family: var(--serif);
+    font-size: 24px; font-weight: 800;
+    color: var(--accent); letter-spacing: -.02em;
+  }
+  .impact-label {
+    font-family: var(--mono); font-size: 9px;
+    color: var(--hint); letter-spacing: .06em;
+  }
+  .impact-sep { width: 1px; height: 40px; background: var(--border); }
+
+  /* ── CAPABILITIES ── */
+  .caps-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .cap-card {
+    border: 1px solid var(--border-md);
+    border-radius: 8px;
+    padding: 1.35rem 1.25rem 1.1rem;
+    transition: border-color .2s, background .2s;
+  }
+  .cap-card:hover { border-color: var(--accent-border); background: var(--bg2); }
+  .cap-icon {
+    font-family: var(--mono); font-size: 9px;
+    letter-spacing: .12em; color: var(--accent);
+    margin-bottom: .75rem;
+    padding-bottom: .65rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .cap-name { font-family: var(--serif); font-size: 14px; font-weight: 700; margin-bottom: .45rem; }
+  .cap-desc { font-size: 12px; color: var(--muted); line-height: 1.65; }
+  .cap-pills { display: flex; flex-wrap: wrap; gap: 4px; margin-top: .75rem; }
+  .cpill {
+    font-family: var(--mono); font-size: 9px;
+    padding: 2px 7px;
+    border: 1px solid var(--border);
+    border-radius: 2px; color: var(--hint);
+  }
+
+  /* ── STACK ── */
+  .stack-grid { display: grid; grid-template-columns: repeat(4, 1fr); border: 1px solid var(--border-md); border-radius: 10px; overflow: hidden; }
+  .sk-col {
+    padding: 1.5rem 1.25rem;
+    border-right: 1px solid var(--border);
+  }
+  .sk-col:last-child { border-right: none; }
+  .sk-col-h {
+    font-family: var(--serif); font-size: 13px;
+    font-weight: 700; margin-bottom: 1rem;
+    padding-bottom: .6rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .sk-list { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+  .sk-list li { font-family: var(--mono); font-size: 10px; color: var(--muted); letter-spacing: .02em; }
+  .sk-list li.hi { color: var(--accent); }
+
+  /* ── CONTACT ── */
+  .contact-box {
+    border: 1px solid var(--border-md);
+    border-radius: 10px;
+    padding: 3rem 2.5rem;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 3rem;
+    align-items: center;
+  }
+  .contact-h {
+    font-family: var(--serif);
+    font-size: clamp(28px, 5vw, 48px);
+    font-weight: 800;
+    letter-spacing: -.03em;
+    line-height: 1.05;
+  }
+  .contact-h .dim { color: var(--hint); }
+  .contact-links { display: flex; flex-direction: column; gap: 12px; align-items: flex-end; }
+  .cl {
+    font-family: var(--mono); font-size: 11px;
+    color: var(--muted); text-decoration: none;
+    letter-spacing: .04em;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 2px;
+    transition: color .2s, border-color .2s;
+  }
+  .cl:hover { color: var(--text); border-color: rgba(255,255,255,.3); }
+
+  /* ── FOOTER ── */
+  footer {
+    padding: 2rem 2.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 960px; margin: 0 auto;
+  }
+  footer p { font-family: var(--mono); font-size: 10px; color: var(--hint); letter-spacing: .06em; }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .fade-up { animation: fadeUp .7s ease both; }
+  .delay-1 { animation-delay: .1s; }
+  .delay-2 { animation-delay: .2s; }
+  .delay-3 { animation-delay: .35s; }
+  .delay-4 { animation-delay: .5s; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 700px) {
+    .hero-bottom { grid-template-columns: 1fr; }
+    .hero-pills { align-items: flex-start; }
+    .pill-row-r { justify-content: flex-start; }
+    .pc-top { grid-template-columns: 40px 1fr; }
+    .pc-stack { display: none; }
+    .pc-grid { grid-template-columns: 1fr; }
+    .caps-grid { grid-template-columns: 1fr 1fr; }
+    .stack-grid { grid-template-columns: 1fr 1fr; }
+    .contact-box { grid-template-columns: 1fr; }
+    .contact-links { align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+
+<div id="cursor"></div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="#" class="nav-logo">AL · DEV</a>
+    <ul class="nav-links">
+      <li><a href="#experiencia">experiencia</a></li>
+      <li><a href="#stack">stack</a></li>
+      <li><a href="#contacto">contacto</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" style="border-bottom:1px solid var(--border)">
+  <div class="container">
+    <p class="hero-kicker fade-up">// FULLSTACK ENGINEER · DEVOPS · MONTERREY MX</p>
+    <h1 class="hero-h1 fade-up delay-1">
+      Aldo<br>
+      <span class="dim">López</span><span class="dot">.</span>
+    </h1>
+    <div class="hero-bottom fade-up delay-2">
+      <div>
+        <p class="hero-bio">
+          No solo construyo código — <strong>lo llevo a producción</strong>.<br>
+          Diseño sistemas complejos con Laravel + Vue, los contenedizo con Docker
+          y los opero con CI/CD en servidores reales. Desde ERPs hasta plataformas
+          de reservas integradas con <strong>GDS globales</strong>.
+        </p>
+        <div class="cta-row">
+          <a href="#experiencia" class="btn-primary">Ver experiencia →</a>
+          <a href="mailto:aldo@email.com" class="btn-ghost">Contactar</a>
+        </div>
+      </div>
+      <div class="hero-pills">
+        <div class="pill-row-r">
+          <span class="pill pill-hi">Laravel</span>
+          <span class="pill pill-hi">Vue 3</span>
+        </div>
+        <div class="pill-row-r">
+          <span class="pill pill-hi">Docker</span>
+          <span class="pill">PostgreSQL</span>
+          <span class="pill">Redis</span>
+        </div>
+        <div class="pill-row-r">
+          <span class="pill">Amadeus API</span>
+          <span class="pill">Sabre API</span>
+        </div>
+        <div class="pill-row-r">
+          <span class="pill">Traefik</span>
+          <span class="pill">CI/CD</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCIA -->
+<section id="experiencia">
+  <div class="container">
+    <p class="eyebrow"><span class="n">01</span> — EXPERIENCIA · CASOS DE ESTUDIO</p>
+    <p class="intro-note">// Sistemas desarrollados en entornos privados. Nombres de cliente omitidos por confidencialidad.</p>
+
+    <div class="proj-list">
+
+      <!-- PROYECTO 1 -->
+      <div class="proj-card">
+        <div class="pc-top">
+          <span class="pc-num">01</span>
+          <div>
+            <div class="pc-tags">
+              <span class="tag tag-amber">Confidencial · NDA</span>
+              <span class="tag">Automotriz</span>
+              <span class="tag tag-blue">ERP a medida</span>
+            </div>
+            <p class="pc-name">Sistema de gestión para taller automotriz</p>
+            <p class="pc-pitch">Plataforma tipo ERP diseñada para talleres de enderezado y pintura — digitalizando por completo los procesos desde la recepción del vehículo hasta la entrega final, incluyendo administración financiera.</p>
+          </div>
+          <div class="pc-stack">Laravel<br>Vue 3<br>Inertia<br>PostgreSQL<br>Docker</div>
+        </div>
+        <div class="pc-grid">
+          <div>
+            <p class="col-label">MÓDULOS DEL SISTEMA</p>
+            <ul class="col-body">
+              <li>Recepción y diagnóstico de vehículos</li>
+              <li>Órdenes de trabajo con seguimiento</li>
+              <li>Control de inventario y refacciones</li>
+              <li>Asignación de técnicos y tiempos</li>
+              <li>Historial por vehículo y cliente</li>
+            </ul>
+          </div>
+          <div>
+            <p class="col-label">ADMINISTRACIÓN FINANCIERA</p>
+            <ul class="col-body">
+              <li>Facturación y comprobantes</li>
+              <li>Cuentas por cobrar</li>
+              <li>Reportes de productividad</li>
+              <li>Roles: admin, recepción, técnico</li>
+              <li>Dashboard con métricas del taller</li>
+            </ul>
+          </div>
+          <div>
+            <p class="col-label">DECISIONES TÉCNICAS</p>
+            <ul class="col-body">
+              <li>Arquitectura monolítica modular</li>
+              <li>SPA con Vue 3 + Inertia.js</li>
+              <li>Generación de PDFs de órdenes</li>
+              <li>Notificaciones en tiempo real</li>
+              <li>Deploy en servidor propio con Docker</li>
+            </ul>
+          </div>
+        </div>
+        <div class="impact-strip">
+          <div class="impact-item">
+            <span class="impact-num">0 papel</span>
+            <span class="impact-label">PROCESOS 100% DIGITALIZADOS</span>
+          </div>
+          <div class="impact-sep"></div>
+          <div class="impact-item">
+            <span class="impact-num">5 roles</span>
+            <span class="impact-label">CON PERMISOS GRANULARES</span>
+          </div>
+          <div class="impact-sep"></div>
+          <div class="impact-item">
+            <span class="impact-num">1 sistema</span>
+            <span class="impact-label">REEMPLAZÓ 3 HERRAMIENTAS DISTINTAS</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- PROYECTO 2 -->
+      <div class="proj-card">
+        <div class="pc-top">
+          <span class="pc-num">02</span>
+          <div>
+            <div class="pc-tags">
+              <span class="tag tag-amber">Confidencial · NDA</span>
+              <span class="tag">Travel Tech</span>
+              <span class="tag tag-blue">Amadeus GDS</span>
+              <span class="tag tag-blue">Sabre GDS</span>
+            </div>
+            <p class="pc-name">Plataforma de gestión de viajes empresariales</p>
+            <p class="pc-pitch">Sistema end-to-end para agencia de viajes corporativa: portal de reservas en tiempo real conectado a GDS globales (Amadeus, Sabre) y back-office administrativo completo con facturación, comisiones y cobranza.</p>
+          </div>
+          <div class="pc-stack">Laravel<br>Vue 3<br>Amadeus API<br>Sabre API<br>PostgreSQL<br>Redis<br>Docker</div>
+        </div>
+        <div class="pc-grid">
+          <div>
+            <p class="col-label">PORTAL DE RESERVAS</p>
+            <ul class="col-body">
+              <li>Búsqueda en tiempo real vía GDS</li>
+              <li>Vuelos, hoteles, autos y autobús</li>
+              <li>Reserva por cliente o por agente</li>
+              <li>Confirmaciones y vouchers automáticos</li>
+              <li>Historial de viajes por viajero</li>
+            </ul>
+          </div>
+          <div>
+            <p class="col-label">BACK-OFFICE ADMINISTRATIVO</p>
+            <ul class="col-body">
+              <li>Facturación y emisión de CFDI</li>
+              <li>Verificación de reservas en GDS</li>
+              <li>Cuentas por cobrar y por pagar</li>
+              <li>Cobranza de comisiones hoteleras</li>
+              <li>Reportes de operación y rentabilidad</li>
+            </ul>
+          </div>
+          <div>
+            <p class="col-label">DECISIONES TÉCNICAS</p>
+            <ul class="col-body">
+              <li>Integración APIs SOAP/REST de GDS</li>
+              <li>Cache Redis para tarifas frecuentes</li>
+              <li>Jobs async para confirmaciones</li>
+              <li>Multi-rol: admin, agente, viajero</li>
+              <li>Deploy multi-servicio con Docker</li>
+            </ul>
+          </div>
+        </div>
+        <div class="impact-strip">
+          <div class="impact-item">
+            <span class="impact-num">2 GDS</span>
+            <span class="impact-label">AMADEUS + SABRE INTEGRADOS</span>
+          </div>
+          <div class="impact-sep"></div>
+          <div class="impact-item">
+            <span class="impact-num">4 tipos</span>
+            <span class="impact-label">VUELO · HOTEL · AUTO · AUTOBÚS</span>
+          </div>
+          <div class="impact-sep"></div>
+          <div class="impact-item">
+            <span class="impact-num">1 plataforma</span>
+            <span class="impact-label">RESERVAS + ADMINISTRACIÓN UNIFICADAS</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CAPACIDADES -->
+<section id="capacidades">
+  <div class="container">
+    <p class="eyebrow"><span class="n">02</span> — CAPACIDADES · LO QUE PUEDO CONSTRUIR</p>
+    <div class="caps-grid">
+      <div class="cap-card">
+        <p class="cap-icon">// ERP & GESTIÓN</p>
+        <p class="cap-name">Sistemas ERP a medida</p>
+        <p class="cap-desc">Plataformas de gestión de operaciones, inventarios, órdenes de trabajo y facturación adaptadas al negocio.</p>
+        <div class="cap-pills"><span class="cpill">Laravel</span><span class="cpill">Vue 3</span><span class="cpill">PostgreSQL</span></div>
+      </div>
+      <div class="cap-card">
+        <p class="cap-icon">// GDS INTEGRATIONS</p>
+        <p class="cap-name">Integraciones con GDS globales</p>
+        <p class="cap-desc">Conexión con Amadeus y Sabre para búsqueda y reserva en tiempo real de vuelos, hoteles, autos y autobús.</p>
+        <div class="cap-pills"><span class="cpill">Amadeus</span><span class="cpill">Sabre</span><span class="cpill">SOAP/REST</span></div>
+      </div>
+      <div class="cap-card">
+        <p class="cap-icon">// REAL-TIME SYSTEMS</p>
+        <p class="cap-name">Sistemas en tiempo real</p>
+        <p class="cap-desc">Búsqueda con disponibilidad en vivo, cache inteligente de tarifas, queues y notificaciones instantáneas.</p>
+        <div class="cap-pills"><span class="cpill">Redis</span><span class="cpill">Queues</span><span class="cpill">Horizon</span></div>
+      </div>
+      <div class="cap-card">
+        <p class="cap-icon">// MULTI-ROL AUTH</p>
+        <p class="cap-name">Roles y permisos complejos</p>
+        <p class="cap-desc">Sistemas con múltiples tipos de usuario (admin, agente, cliente, técnico) con acceso granular por módulo.</p>
+        <div class="cap-pills"><span class="cpill">Sanctum</span><span class="cpill">Spatie</span><span class="cpill">Policies</span></div>
+      </div>
+      <div class="cap-card">
+        <p class="cap-icon">// BILLING & FINANCE</p>
+        <p class="cap-name">Módulos financieros</p>
+        <p class="cap-desc">Facturación CFDI, cuentas por cobrar/pagar, comisiones, cobranza y reportes de rentabilidad integrados.</p>
+        <div class="cap-pills"><span class="cpill">CFDI</span><span class="cpill">Laravel</span><span class="cpill">PostgreSQL</span></div>
+      </div>
+      <div class="cap-card">
+        <p class="cap-icon">// DEVOPS</p>
+        <p class="cap-name">Deploy y operación</p>
+        <p class="cap-desc">Contenedización, reverse proxy, SSL automático, CI/CD y ambientes reproducibles para producción real.</p>
+        <div class="cap-pills"><span class="cpill">Docker</span><span class="cpill">Traefik</span><span class="cpill">GitHub Actions</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STACK -->
+<section id="stack">
+  <div class="container">
+    <p class="eyebrow"><span class="n">03</span> — STACK TÉCNICO</p>
+    <div class="stack-grid">
+      <div class="sk-col">
+        <p class="sk-col-h">Frontend</p>
+        <ul class="sk-list">
+          <li class="hi">Vue 3 / Inertia</li>
+          <li class="hi">TypeScript</li>
+          <li>Pinia</li>
+          <li>Vite</li>
+          <li>Tailwind CSS</li>
+        </ul>
+      </div>
+      <div class="sk-col">
+        <p class="sk-col-h">Backend</p>
+        <ul class="sk-list">
+          <li class="hi">Laravel 11</li>
+          <li class="hi">PHP 8.3</li>
+          <li>PostgreSQL</li>
+          <li>Redis / Horizon</li>
+          <li>REST / SOAP APIs</li>
+        </ul>
+      </div>
+      <div class="sk-col">
+        <p class="sk-col-h">DevOps</p>
+        <ul class="sk-list">
+          <li class="hi">Docker / Compose</li>
+          <li class="hi">Traefik</li>
+          <li>GitHub Actions</li>
+          <li>Linux / Bash</li>
+          <li>Let's Encrypt</li>
+        </ul>
+      </div>
+      <div class="sk-col">
+        <p class="sk-col-h">Especialidades</p>
+        <ul class="sk-list">
+          <li class="hi">GDS: Amadeus · Sabre</li>
+          <li class="hi">Facturación CFDI</li>
+          <li>Multi-tenant</li>
+          <li>Queue workers</li>
+          <li>CI/CD pipelines</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contacto">
+  <div class="container">
+    <p class="eyebrow"><span class="n">04</span> — CONTACTO</p>
+    <div class="contact-box">
+      <div>
+        <p class="contact-h">¿Construimos algo<br><span class="dim">que escale?</span></p>
+      </div>
+      <div class="contact-links">
+        <a class="cl" href="mailto:aldo@email.com">aldo@email.com</a>
+        <a class="cl" href="https://github.com/aldo" target="_blank">github.com/aldo</a>
+        <a class="cl" href="https://linkedin.com/in/aldo" target="_blank">linkedin.com/in/aldo</a>
+        <a class="cl" href="#">Descargar CV →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>© 2025 ALDO LÓPEZ</p>
+  <p>FULLSTACK ENGINEER · MONTERREY MX</p>
+</footer>
+
+<script>
+  const cursor = document.getElementById('cursor');
+  let mx = 0, my = 0;
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    cursor.style.transform = `translate(${mx - 4}px, ${my - 4}px)`;
+  });
+  document.querySelectorAll('a, button, .proj-card, .cap-card').forEach(el => {
+    el.addEventListener('mouseenter', () => cursor.classList.add('big'));
+    el.addEventListener('mouseleave', () => cursor.classList.remove('big'));
+  });
+
+  // Scroll reveal
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.opacity = '1';
+        e.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.proj-card, .cap-card, .sk-col').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(20px)';
+    el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+    observer.observe(el);
+  });
+</script>
+</body>
+</html>

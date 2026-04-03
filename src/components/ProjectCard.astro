@@ -1,0 +1,202 @@
+---
+import type { Project } from '../data/projects';
+
+interface Props {
+  project: Project;
+}
+const { project } = Astro.props;
+
+const tagClass = (color: string) => {
+  if (color === 'blue')  return 'tag tag-blue';
+  if (color === 'amber') return 'tag tag-amber';
+  return 'tag';
+};
+---
+
+<div class="proj-card">
+  <!-- Cabecera -->
+  <div class="pc-top">
+    <span class="pc-num">{project.number}</span>
+    <div>
+      <div class="pc-tags">
+        {project.tags.map(t => (
+          <span class={tagClass(t.color)}>{t.label}</span>
+        ))}
+      </div>
+      <p class="pc-name">{project.name}</p>
+      <p class="pc-pitch">{project.pitch}</p>
+    </div>
+    <div class="pc-stack">
+      {project.stack.map(s => <span>{s}<br/></span>)}
+    </div>
+  </div>
+
+  <!-- Columnas de detalle -->
+  <div class="pc-grid">
+    {project.columns.map(col => (
+      <div>
+        <p class="col-label">{col.label}</p>
+        <ul class="col-body">
+          {col.items.map(item => <li>{item}</li>)}
+        </ul>
+      </div>
+    ))}
+  </div>
+
+  <!-- Strip de impacto -->
+  <div class="impact-strip">
+    {project.impact.map((item, i) => (
+      <>
+        <div class="impact-item">
+          <span class="impact-num">{item.value}</span>
+          <span class="impact-label">{item.label}</span>
+        </div>
+        {i < project.impact.length - 1 && <div class="impact-sep" />}
+      </>
+    ))}
+  </div>
+</div>
+
+<style>
+  .proj-card {
+    padding: 2rem 2.25rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    transition: background 0.25s;
+  }
+  .proj-card:last-child { border-bottom: none; }
+  .proj-card:hover { background: #111111; }
+
+  .pc-top {
+    display: grid;
+    grid-template-columns: 52px 1fr auto;
+    gap: 1.25rem;
+    align-items: start;
+    margin-bottom: 1.5rem;
+  }
+
+  .pc-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 44px;
+    font-weight: 800;
+    color: #444441;
+    line-height: 1;
+  }
+
+  .pc-tags {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-bottom: 0.5rem;
+  }
+
+  .tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    padding: 2px 8px;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 2px;
+    color: #888780;
+    letter-spacing: 0.04em;
+  }
+  .tag-blue  { border-color: rgba(55, 138, 221, 0.35); color: #378ADD; }
+  .tag-amber { border-color: rgba(239, 159, 39, 0.4);  color: #EF9F27; }
+
+  .pc-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+    margin-bottom: 0.4rem;
+  }
+
+  .pc-pitch {
+    font-size: 13px;
+    color: #888780;
+    line-height: 1.65;
+    max-width: 500px;
+  }
+
+  .pc-stack {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: #444441;
+    text-align: right;
+    line-height: 2;
+    white-space: nowrap;
+  }
+
+  /* Columnas */
+  .pc-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1.75rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .col-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    color: #444441;
+    margin-bottom: 0.65rem;
+  }
+
+  .col-body { list-style: none; }
+  .col-body li {
+    font-size: 12px;
+    color: #888780;
+    line-height: 1.7;
+    padding-left: 12px;
+    position: relative;
+    margin-bottom: 2px;
+  }
+  .col-body li::before {
+    content: "›";
+    position: absolute;
+    left: 0;
+    color: #378ADD;
+  }
+
+  /* Impact strip */
+  .impact-strip {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    flex-wrap: wrap;
+  }
+
+  .impact-item { display: flex; flex-direction: column; gap: 3px; }
+
+  .impact-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 24px;
+    font-weight: 800;
+    color: #378ADD;
+    letter-spacing: -0.02em;
+  }
+
+  .impact-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    color: #444441;
+    letter-spacing: 0.06em;
+  }
+
+  .impact-sep {
+    width: 1px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.08);
+    flex-shrink: 0;
+  }
+
+  @media (max-width: 700px) {
+    .pc-top    { grid-template-columns: 40px 1fr; }
+    .pc-stack  { display: none; }
+    .pc-grid   { grid-template-columns: 1fr; }
+  }
+</style>
