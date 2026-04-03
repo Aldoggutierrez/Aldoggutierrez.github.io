@@ -8,8 +8,17 @@ export const site = {
   email:          'aldo.ggutierrezc@gmail.com',
   github:         'https://github.com/Aldoggutierrez',
   githubUsername: 'Aldoggutierrez',
-  linkedin:       'https://linkedin.com/in/aldo',
-  cvUrl:          '#',  // Reemplaza con la URL real de tu CV
+  linkedin:       'https://linkedin.com/in/aldo',  // ← actualiza con tu usuario real
+  cvUrl:          '#',                              // ← reemplaza con la URL de tu CV
   year:           '2025',
-  bio:       'No solo construyo código — <strong>lo llevo a producción</strong>.<br>Diseño sistemas complejos con Laravel + Vue, los contenedizo con Docker y los opero con CI/CD en servidores reales. Desde ERPs hasta plataformas de reservas integradas con <strong>GDS globales</strong>.',
+  bio:            'No solo construyo código — <strong>lo llevo a producción</strong>.<br>Diseño sistemas complejos con Laravel + Vue, los contenedizo con Docker y los opero con CI/CD en servidores reales. Desde ERPs hasta plataformas de reservas integradas con <strong>GDS globales</strong>.',
+
+  // Tecnologías del hero — cada sub-array es una fila de pills
+  // hi: true → resaltado en azul
+  heroPills: [
+    [{ label: 'Laravel', hi: true },  { label: 'Vue 3',      hi: true  }],
+    [{ label: 'Docker',  hi: true },  { label: 'PostgreSQL', hi: false }, { label: 'Redis',   hi: false }],
+    [{ label: 'Amadeus API', hi: false }, { label: 'Sabre API', hi: false }],
+    [{ label: 'Traefik', hi: false }, { label: 'CI/CD',      hi: false }],
+  ],
 };

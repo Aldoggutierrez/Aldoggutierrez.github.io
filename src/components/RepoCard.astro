@@ -57,7 +57,7 @@ const updatedLabel =
     )}
   </div>
 
-  <p class="rc-desc">{repo.description ?? 'Sin descripción'}</p>
+  {repo.description && <p class="rc-desc">{repo.description}</p>}
 
   {repo.topics.length > 0 && (
     <div class="rc-topics">

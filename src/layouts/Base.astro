@@ -1,11 +1,19 @@
 ---
 import '../styles/global.css';
 import Cursor from '../components/Cursor.astro';
+import { site } from '../data/site';
 
 interface Props {
-  title?: string;
+  title?:       string;
+  description?: string;
 }
-const { title = 'Aldo Gutierrez — Fullstack Engineer & DevOps' } = Astro.props;
+
+const {
+  title       = `${site.name} — Fullstack Engineer & DevOps`,
+  description = `Portafolio de ${site.name} — Fullstack Engineer & DevOps especializado en Laravel, Vue 3, Docker y GDS.`,
+} = Astro.props;
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 ---
 
 <!doctype html>
@@ -13,8 +21,25 @@ const { title = 'Aldo Gutierrez — Fullstack Engineer & DevOps' } = Astro.props
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Portafolio de Aldo Gutierrez — Fullstack Engineer & DevOps especializado en Laravel, Vue 3, Docker y GDS." />
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalURL} />
+
+    <!-- Open Graph -->
+    <meta property="og:type"        content="website" />
+    <meta property="og:url"         content={canonicalURL} />
+    <meta property="og:title"       content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:locale"      content="es_MX" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card"        content="summary" />
+    <meta name="twitter:title"       content={title} />
+    <meta name="twitter:description" content={description} />
+
     <title>{title}</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
     <!-- Fuentes -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />

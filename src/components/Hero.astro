@@ -21,25 +21,15 @@ import { site } from '../data/site';
         </div>
       </div>
 
-      <!-- Pills de tecnologías -->
+      <!-- Pills de tecnologías — edita en src/data/site.ts → heroPills -->
       <div class="hero-pills">
-        <div class="pill-row">
-          <span class="pill pill-hi">Laravel</span>
-          <span class="pill pill-hi">Vue 3</span>
-        </div>
-        <div class="pill-row">
-          <span class="pill pill-hi">Docker</span>
-          <span class="pill">PostgreSQL</span>
-          <span class="pill">Redis</span>
-        </div>
-        <div class="pill-row">
-          <span class="pill">Amadeus API</span>
-          <span class="pill">Sabre API</span>
-        </div>
-        <div class="pill-row">
-          <span class="pill">Traefik</span>
-          <span class="pill">CI/CD</span>
-        </div>
+        {site.heroPills.map(row => (
+          <div class="pill-row">
+            {row.map(p => (
+              <span class={p.hi ? 'pill pill-hi' : 'pill'}>{p.label}</span>
+            ))}
+          </div>
+        ))}
       </div>
     </div>
   </div>
